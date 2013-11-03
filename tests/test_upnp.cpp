@@ -64,7 +64,7 @@ void UpnpTest::OnFailedMapping(const int &port,
          protocol == upnp::kUdp ? "UDP" : "TCP", port);
 }
 
-BOOST_AUTO_TEST_CASE(UPNP_PortMappingTest)
+BOOST_AUTO_TEST_CASE(UPNP_TcpPortMappingTest)
 {
     upnp::UpnpIgdClient upnp;
     UpnpTest test;
@@ -107,4 +107,49 @@ BOOST_AUTO_TEST_CASE(UPNP_PortMappingTest)
       printf("Sorry, no port mappings via UPnP possible.\n");
     }
     BOOST_CHECK(upnp.DeletePortMapping(start_port + test.num_total_mappings - 1, upnp::kTcp));
+    BOOST_CHECK(upnp.DeleteAllPortMappings());
+}
+
+BOOST_AUTO_TEST_CASE(UPNP_UdpPortMappingTest)
+{
+    upnp::UpnpIgdClient upnp;
+    UpnpTest test;
+
+    printf("Initialising UPnP...\n");
+
+    BOOST_CHECK(upnp.InitControlPoint());
+
+    if (upnp.IsAsync()) {
+      upnp.SetNewMappingCallback(
+        boost::bind(&UpnpTest::OnNewMapping, &test, _1, _2));
+      upnp.SetLostMappingCallback(
+        boost::bind(&UpnpTest::OnLostMapping, &test, _1, _2));
+      upnp.SetFailedMappingCallback(
+        boost::bind(&UpnpTest::OnFailedMapping, &test, _1, _2));
+    }
+
+    boost::int32_t start_port(9660);
+
+    bool all_added = true;
+    for (int i = 0; i < test.num_total_mappings; ++i) {
+      all_added &= upnp.AddPortMapping(start_port + i, upnp::kUdp);
+    }
+
+    if (upnp.IsAsync()) {
+      printf("Waiting...\n");
+      boost::this_thread::sleep(boost::posix_time::seconds(3));
+    }
+
+    if (upnp.HasServices()) {
+      printf("External IP: %s\n", upnp.GetExternalIpAddress().c_str());
+      BOOST_CHECK(all_added);
+      if (upnp.IsAsync()) {
+        BOOST_CHECK(test.num_curr_mappings == test.num_total_mappings);
+      }
+      printf("All UPnP mappings successful.\n");
+    } else {
+      printf("Sorry, no port mappings via UPnP possible.\n");
+    }
+    BOOST_CHECK(upnp.DeletePortMapping(start_port + test.num_total_mappings - 1, upnp::kUdp));
+    BOOST_CHECK(upnp.DeleteAllPortMappings());
 }
