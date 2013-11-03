@@ -24,14 +24,6 @@ OpenBSD, MacOS X, AmigaOS and cygwin.
 The official AmigaOS4.1 SDK was used for AmigaOS4 and GeekGadgets for AmigaOS3.
 upx (http://upx.sourceforge.net) is used to compress the win32 .exe files.
 
-To install the library and headers on the system use :
-> su
-> make install
-> exit
-
-alternatively, to install into a specific location, use :
-> INSTALLPREFIX=/usr/local make install
-
 upnpc.c is a sample client using the libminiupnpc.
 To use the libminiupnpc in your application, link it with
 libminiupnpc.a (or .so) and use the following functions found in miniupnpc.h,
@@ -46,13 +38,6 @@ Note : use #include <miniupnpc/miniupnpc.h> etc... for the includes
 and -lminiupnpc for the link
 
 Discovery process is speeded up when MiniSSDPd is running on the machine.
-
-
-* Python module *
-
-you can build a python module with 'make pythonmodule'
-and install it with 'make installpythonmodule'.
-setup.py (and setupmingw32.py) are included in the distribution.
 
 
 Feel free to contact me if you have any problem :
