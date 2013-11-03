@@ -1,0 +1,11 @@
+language: cpp
+compiler: clang
+cache: apt
+before_install:
+  - ./travis-ci/travis_install_packages.sh
+  - ./travis-ci/travis_build_ninja.sh
+  - ./travis-ci/travis_build_libcxx.sh
+  - ./travis-ci/travis_build_boost.sh
+script: CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake -G "Ninja" -DBUILD_TESTING=YES . && ninja && ctest
+notifications:
+  email: false
