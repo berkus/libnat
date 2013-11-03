@@ -10,3 +10,7 @@ add_library(nat STATIC
     maidsafe_gateway.cc
     maidsafe_utils.cc)
 add_definitions(-Wno-unused-function) # in maidsafe_network_interface.cc
+
+if (UNIX AND NOT APPLE)
+    add_definitions(-DMAIDSAFE_LINUX)
+endif
