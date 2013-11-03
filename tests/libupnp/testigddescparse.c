@@ -9,9 +9,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "igd_desc_parse.h"
-#include "minixml.h"
-#include "miniupnpc.h"
+#include "libupnp/igd_desc_parse.h"
+#include "libupnp/minixml.h"
+#include "libupnp/miniupnpc.h"
 
 int test_igd_desc_parse(char * buffer, int len)
 {

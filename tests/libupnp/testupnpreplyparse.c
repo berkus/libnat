@@ -6,7 +6,7 @@
  * in the LICENCE file provided within the distribution */
 #include <stdio.h>
 #include <stdlib.h>
-#include "upnpreplyparse.h"
+#include "libupnp/upnpreplyparse.h"
 
 void
 test_parsing(const char * buf, int len)

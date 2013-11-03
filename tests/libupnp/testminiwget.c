@@ -7,7 +7,7 @@
  * */
 #include <stdio.h>
 #include <stdlib.h>
-#include "miniwget.h"
+#include "libupnp/miniwget.h"
 
 /**
  * This program uses the miniwget / miniwget_getaddr function

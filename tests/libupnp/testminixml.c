@@ -10,8 +10,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "minixml.h"
-#include "igd_desc_parse.h"
+#include "libupnp/minixml.h"
+#include "libupnp/igd_desc_parse.h"
 
 /* ---------------------------------------------------------------------- */
 void printeltname1(void * d, const char * name, int l)

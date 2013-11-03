@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "minixml.h"
+#include "libupnp/minixml.h"
 
 /* xml event structure */
 struct event {
