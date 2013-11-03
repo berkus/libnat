@@ -45,6 +45,7 @@ class UpnpIgdClient {
   bool InitControlPoint();
   bool AddPortMapping(const int &port, const ProtocolType &protocol);
   bool DeletePortMapping(const int &port, const ProtocolType &protocol);
+  bool DeleteAllPortMappings();
 
   std::string GetExternalIpAddress();
 

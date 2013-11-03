@@ -56,6 +56,11 @@ bool UpnpIgdClient::DeletePortMapping(const int &port,
   return pimpl_->DeletePortMapping(port, protocol);
 }
 
+bool UpnpIgdClient::DeleteAllPortMappings()
+{
+  return pimpl_->DeleteAllPortMappings();
+}
+
 std::string UpnpIgdClient::GetExternalIpAddress() {
   return pimpl_->GetExternalIpAddress();
 }
