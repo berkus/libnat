@@ -30,6 +30,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <boost/bind.hpp>
 #include "maidsafe-dht_config.h"
 #include "upnpclient.h"
+#include "protocol.h"
 
 // Test depends on external UPnP device, but doesn't fail if none found
 
@@ -84,7 +85,7 @@ BOOST_AUTO_TEST_CASE(UPNP_TcpPortMappingTest)
 
     // boost::this_thread::sleep(boost::posix_time::seconds(2));
 
-    boost::int32_t start_port(9660);
+    boost::int32_t start_port(ssu::stream_protocol::default_port);
 
     bool all_added = true;
     for (int i = 0; i < test.num_total_mappings; ++i) {
@@ -128,7 +129,7 @@ BOOST_AUTO_TEST_CASE(UPNP_UdpPortMappingTest)
         boost::bind(&UpnpTest::OnFailedMapping, &test, _1, _2));
     }
 
-    boost::int32_t start_port(9660);
+    boost::int32_t start_port(ssu::stream_protocol::default_port);
 
     bool all_added = true;
     for (int i = 0; i < test.num_total_mappings; ++i) {
