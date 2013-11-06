@@ -21,7 +21,7 @@ else (NOT WIN32)
     add_definitions(-D_WIN32_WINNT=0x0501) # XP or higher for getnameinfo and friends
 endif (NOT WIN32)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+if (APPLE)
     add_definitions(-DMACOSX -D_DARWIN_C_SOURCE)
 endif ()
 
