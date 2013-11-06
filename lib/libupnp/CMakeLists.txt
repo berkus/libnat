@@ -3,10 +3,12 @@ option (UPNPC_BUILD_SHARED "Build shared library" FALSE)
 option (NO_GETADDRINFO "Define NO_GETADDRINFO" FALSE)
 mark_as_advanced (NO_GETADDRINFO)
 
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    add_definitions(-DDEBUG)
+endif()
+
 add_definitions(-DMINIUPNPC_VERSION_STRING=\"1.7\")
 add_definitions(-DOS_STRING=\"${CMAKE_SYSTEM_NAME}\")
-
-add_definitions(-DDEBUG)
 
 if (NO_GETADDRINFO)
     add_definitions(-DNO_GETADDRINFO)
