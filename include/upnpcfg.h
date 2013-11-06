@@ -46,12 +46,15 @@ enum ProtocolType {
 typedef boost::function<void(const int&, const ProtocolType&)> upnp_callback;
 
 struct PortMapping {
-  PortMapping(const int &port_,
-              const ProtocolType &protocol_): internal_port(port_),
-                                              external_port(port_),
-                                              protocol(protocol_),
-                                              enabled(false),
-                                              last_refresh() {}
+  PortMapping(const int &port,
+              const ProtocolType &protocol_)
+    : internal_port(port)
+    , external_port(port)
+    , protocol(protocol_)
+    , enabled(false)
+    , last_refresh()
+  {}
+
   int internal_port;
   int external_port;
   ProtocolType protocol;
