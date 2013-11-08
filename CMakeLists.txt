@@ -4,6 +4,12 @@ if (NOT BUILD_IN_METTANODE)
     include(cmake/setup.cmake)
 endif()
 
+if (NOT BUILD_IN_METTANODE)
+    include_directories(3rdparty/endian 3rdparty/support/include 3rdparty/plist/include)
+    add_subdirectory(3rdparty/plist)
+    add_subdirectory(3rdparty/support/lib)
+endif()
+
 include_directories(include)
 add_subdirectory(lib)
 

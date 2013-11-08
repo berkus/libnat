@@ -4,3 +4,12 @@
 [submodule "cmake"]
 	path = cmake
 	url = https://berkus@github.com/berkus/cmake-setup.git
+[submodule "3rdparty/support"]
+	path = 3rdparty/support
+	url = https://berkus@github.com/berkus/libsupport.git
+[submodule "3rdparty/plist"]
+	path = 3rdparty/plist
+	url = https://berkus@github.com/berkus/PlistCpp.git
+[submodule "3rdparty/endian"]
+	path = 3rdparty/endian
+	url = https://berkus@github.com/berkus/endian.git
