@@ -44,6 +44,7 @@ class UpnpIgdClient {
 
   bool InitControlPoint();
   bool AddPortMapping(const int &port, const ProtocolType &protocol);
+  bool AddPortMapping(int in_port, int out_port, ProtocolType protocol);
   bool DeletePortMapping(const int &port, const ProtocolType &protocol);
   bool DeleteAllPortMappings();
 

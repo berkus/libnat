@@ -51,6 +51,11 @@ bool UpnpIgdClient::AddPortMapping(const int &port,
   return pimpl_->AddPortMapping(PortMapping(port, protocol));
 }
 
+bool UpnpIgdClient::AddPortMapping(int in_port, int out_port, ProtocolType protocol)
+{
+  return pimpl_->AddPortMapping(PortMapping(in_port, out_port, protocol));
+}
+
 bool UpnpIgdClient::DeletePortMapping(const int &port,
                                       const ProtocolType &protocol) {
   return pimpl_->DeletePortMapping(port, protocol);
