@@ -34,7 +34,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "libupnp/miniupnpc.h"
 #include "libupnp/upnpcommands.h"
 
-// #define DEBUG
+#define DEBUG
 
 namespace upnp {
 
