@@ -46,6 +46,10 @@ bool UpnpIgdClient::InitControlPoint() {
   return pimpl_->InitControlPoint();
 }
 
+bool UpnpIgdClient::GetPortMappings(std::list<PortMappingExt>& out_mapping) {
+  return pimpl_->GetPortMappings(out_mapping);
+}
+
 bool UpnpIgdClient::AddPortMapping(const int &port,
                                    const ProtocolType &protocol) {
   return pimpl_->AddPortMapping(PortMapping(port, protocol));

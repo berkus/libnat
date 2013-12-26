@@ -54,6 +54,9 @@ class UpnpIgdClientImpl {
   // starts up the UPnP control point, including device discovery
   bool InitControlPoint();
 
+  // get a list of existing port mappings from the IGD
+  bool GetPortMappings(std::list<PortMappingExt>& out_mappings);
+
   // schedules a port mapping for registration with known and future services
   bool AddPortMapping(const PortMapping &mapping);
   // checks, if the given mapping exists in the internal list

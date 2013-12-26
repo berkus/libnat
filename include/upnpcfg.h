@@ -69,4 +69,19 @@ struct PortMapping {
   std::map<std::string, boost::uint32_t> last_refresh;
 };
 
+struct PortMappingExt : public PortMapping
+{
+  std::string internal_host;
+  std::string external_host;
+  std::string description;
+  int duration{kLeaseDuration};
+
+  PortMappingExt(const int &port, const ProtocolType &protocol_)
+    : PortMapping(port, protocol_)
+  {}
+  PortMappingExt(int in_port, int out_port, const ProtocolType &protocol_)
+    : PortMapping(in_port, out_port, protocol_)
+  {}
+};
+
 }  // namespace upnp

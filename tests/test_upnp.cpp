@@ -27,10 +27,13 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define BOOST_TEST_MODULE Test_upnp
 #include <boost/test/unit_test.hpp>
 
+#include <iostream>
 #include <boost/bind.hpp>
 #include "maidsafe-dht_config.h"
 #include "upnpclient.h"
 #include "protocol.h"
+
+using namespace std;
 
 // Test depends on external UPnP device, but doesn't fail if none found
 
@@ -84,6 +87,17 @@ BOOST_AUTO_TEST_CASE(UPNP_TcpPortMappingTest)
     }
 
     // boost::this_thread::sleep(boost::posix_time::seconds(2));
+
+    std::list<upnp::PortMappingExt> out_mapping;
+    upnp.GetPortMappings(out_mapping);
+
+    for (auto m : out_mapping)
+    {
+      cout << "UPNP mapping found: int host " << m.internal_host << ", int port " << m.internal_port
+        << " to ext host " << m.external_host << ", ext port " << m.external_port << endl
+        << " protocol " << m.protocol << ", enabled " << m.enabled << ", duration " << m.duration
+        << ", desc " << m.description << endl;
+    }
 
     boost::int32_t start_port(ssu::stream_protocol::default_port);
 

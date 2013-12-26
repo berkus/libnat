@@ -70,6 +70,64 @@ bool UpnpIgdClientImpl::InitControlPoint() {
   return is_initialised_;  // && has_services_;
 }
 
+bool UpnpIgdClientImpl::GetPortMappings(std::list<PortMappingExt>& out_mapping)
+{
+  int ret;
+
+  out_mapping.clear();
+
+// get the state var instead
+// <relatedStateVariable>PortMappingNumberOfEntries</relatedStateVariable>
+// @todo Parse SCPD and get actual supported command and var names from there...
+
+  int i = 0;
+  while (true)
+  {
+    char extPort[6] = {0};
+    char intClient[16] = {0};
+    char intPort[6] = {0};
+    char protocol[4] = {0};
+    char desc[80] = {0};
+    char enabled[4] = {0};
+    char rHost[64] = {0};
+    char duration[16] = {0};
+
+    char index[16] = {0};
+    snprintf(index, 16, "%u", i);
+    ret = UPNP_GetGenericPortMappingEntry(upnp_urls_.controlURL,
+                                          igd_data_.first.servicetype,
+                                          index,
+                                          extPort,
+                                          intClient,
+                                          intPort,
+                                          protocol,
+                                          desc,
+                                          enabled,
+                                          rHost,
+                                          duration);
+
+    if (ret == 501) {
+      break;
+    }
+    assert(ret == UPNPCOMMAND_SUCCESS);
+
+    PortMappingExt pm(boost::lexical_cast<int>(intPort),
+                   boost::lexical_cast<int>(extPort),
+                   (std::string(protocol) == "TCP" ? kTcp : kUdp));
+    pm.enabled = (std::string(enabled) == "1" ? true : false);
+    pm.internal_host = intClient;
+    pm.external_host = rHost;
+    pm.duration = boost::lexical_cast<int>(duration);
+    pm.description = desc;
+
+    out_mapping.emplace_back(pm);
+
+    ++i;
+  }
+
+  return true;
+}
+
 bool UpnpIgdClientImpl::AddPortMapping(const PortMapping &mapping) {
   PortMapping *pm;
   std::list<PortMapping>::iterator it;

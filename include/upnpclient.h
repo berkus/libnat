@@ -43,6 +43,7 @@ class UpnpIgdClient {
   bool HasServices();
 
   bool InitControlPoint();
+  bool GetPortMappings(std::list<PortMappingExt>& out_mapping);
   bool AddPortMapping(const int &port, const ProtocolType &protocol);
   bool AddPortMapping(int in_port, int out_port, ProtocolType protocol);
   bool DeletePortMapping(const int &port, const ProtocolType &protocol);
