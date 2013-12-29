@@ -30,7 +30,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <boost/asio/io_service.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/thread.hpp>
+#include <thread>
 
 #include "natpmpclient.h"
 
@@ -57,14 +57,16 @@ BOOST_AUTO_TEST_CASE(NATPMP)
 
     client.MapPort(natpmp::Protocol::kUdp, 33333, 33333, 3600);
 
-    boost::shared_ptr<boost::thread> thread(new boost::thread(
-        boost::bind(&boost::asio::io_service::run, &ios)));
+    std::thread thread([&] { ios.run(); });
 
-    printf("Sleeping for 64 seconds...\n");
+    printf("Sleeping for 30 seconds...\n");
 
-    boost::this_thread::sleep(boost::posix_time::seconds(64));
+    std::this_thread::sleep_for(std::chrono::seconds(30));
 
     printf("Stopping NAT-PMP...\n");
 
     client.Stop();
+
+    ios.stop();
+    thread.join();
 }
