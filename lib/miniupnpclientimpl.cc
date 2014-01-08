@@ -109,6 +109,11 @@ bool UpnpIgdClientImpl::GetPortMappings(std::list<PortMappingExt>& out_mapping)
     if (ret == 501) {
       break;
     }
+    // Compal Broadband Networks, Inc/Linux/2.6.39.3 UPnP/1.1 MiniUPnPd/1.7 spits this:
+    // 713 - SpecifiedArrayIndexInvalid
+    if (ret == 713) {
+      break;
+    }
     assert(ret == UPNPCOMMAND_SUCCESS);
 
     PortMappingExt pm(boost::lexical_cast<int>(intPort),
