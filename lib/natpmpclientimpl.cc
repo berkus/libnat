@@ -28,8 +28,8 @@ Created by Julian Cain on 11/3/09.
 
 */
 #include <boost/bind.hpp>
-#include "natpmpclientimpl.h"
-#include "maidsafe_gateway.h"
+#include "nat/natpmpclientimpl.h"
+#include "nat/maidsafe_gateway.h"
 #include "logging.h"
 
 namespace natpmp {

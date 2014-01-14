@@ -29,8 +29,8 @@ Created by Julian Cain on 11/3/09.
 */
 
 #include <stdexcept>
-#include "natpmpclient.h"
-#include "natpmpprotocol.h"
+#include "nat/natpmpclient.h"
+#include "nat/natpmpprotocol.h"
 #include "logging.h"
 
 namespace natpmp {

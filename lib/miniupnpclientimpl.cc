@@ -25,11 +25,11 @@ TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "miniupnpclientimpl.h"
+#include "nat/miniupnpclientimpl.h"
 #include <boost/bind.hpp>
 #include <boost/assert.hpp>
 #include <boost/lexical_cast.hpp>
-#include "maidsafe_utils.h"
+#include "nat/maidsafe_utils.h"
 #include "libupnp/miniwget.h"
 #include "libupnp/miniupnpc.h"
 #include "libupnp/upnpcommands.h"

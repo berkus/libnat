@@ -28,7 +28,7 @@ Created by Julian Cain on 11/3/09.
 
 */
 
-#include "maidsafe_gateway.h"
+#include "nat/maidsafe_gateway.h"
 
 #if (defined(MAIDSAFE_APPLE) || defined(MAIDSAFE_POSIX) || defined(__MACH__)) \
     && !defined(MAIDSAFE_LINUX)

@@ -32,7 +32,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <boost/shared_ptr.hpp>
 #include <thread>
 
-#include "natpmpclient.h"
+#include "nat/natpmpclient.h"
 
 BOOST_AUTO_TEST_CASE(NATPMP)
 {

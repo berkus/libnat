@@ -25,13 +25,13 @@ TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "upnpclientimpl.h"
+#include "nat/upnpclientimpl.h"
 #include <upnp/upnptools.h>
 #include <boost/bind.hpp>
 #include <boost/assert.hpp>
 #include <vector>
-#include "maidsafe/maidsafe-dht.h"
-#include "maidsafe/utils.h"
+#include "nat/maidsafe-dht_config.h"
+#include "nat/maidsafe_utils.h"
 
 // #define DEBUG
 

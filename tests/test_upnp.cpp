@@ -29,8 +29,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <iostream>
 #include <boost/bind.hpp>
-#include "maidsafe-dht_config.h"
-#include "upnpclient.h"
+#include "nat/maidsafe-dht_config.h"
+#include "nat/upnpclient.h"
 
 // #include "protocol.h"
 const int default_port = 9660; // Define port in-place instead of ssu dependency

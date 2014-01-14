@@ -28,7 +28,7 @@ Created by Julian Cain on 11/3/09.
 
 */
 
-#include "natpmpprotocol.h"
+#include "nat/natpmpprotocol.h"
 
 namespace natpmp {
 
