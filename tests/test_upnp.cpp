@@ -31,7 +31,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <boost/bind.hpp>
 #include "maidsafe-dht_config.h"
 #include "upnpclient.h"
-#include "protocol.h"
+
+// #include "protocol.h"
+const int default_port = 9660; // Define port in-place instead of ssu dependency
 
 using namespace std;
 
@@ -99,7 +101,7 @@ BOOST_AUTO_TEST_CASE(UPNP_TcpPortMappingTest)
         << ", desc " << m.description << endl;
     }
 
-    boost::int32_t start_port(ssu::stream_protocol::default_port);
+    boost::int32_t start_port(default_port);
 
     bool all_added = true;
     for (int i = 0; i < test.num_total_mappings; ++i) {
@@ -143,7 +145,7 @@ BOOST_AUTO_TEST_CASE(UPNP_UdpPortMappingTest)
         boost::bind(&UpnpTest::OnFailedMapping, &test, _1, _2));
     }
 
-    boost::int32_t start_port(ssu::stream_protocol::default_port);
+    boost::int32_t start_port(default_port);
 
     bool all_added = true;
     for (int i = 0; i < test.num_total_mappings; ++i) {
