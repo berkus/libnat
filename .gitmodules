@@ -4,9 +4,9 @@
 [submodule "cmake"]
 	path = cmake
 	url = https://berkus@github.com/berkus/cmake-setup.git
-[submodule "3rdparty/support"]
-	path = 3rdparty/support
-	url = https://berkus@github.com/berkus/libsupport.git
 [submodule "3rdparty/endian"]
 	path = 3rdparty/endian
 	url = https://berkus@github.com/berkus/endian.git
+[submodule "3rdparty/arsenal"]
+	path = 3rdparty/arsenal
+	url = https://berkus@github.com/berkus/libarsenal.git
