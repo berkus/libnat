@@ -27,7 +27,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <limits>
 #include "nat/maidsafe_calllatertimer.h"
-#include "logging.h"
+#include "arsenal/logging.h"
 
 namespace base {
 

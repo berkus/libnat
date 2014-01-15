@@ -31,7 +31,7 @@ Created by Julian Cain on 11/3/09.
 #include <stdexcept>
 #include "nat/natpmpclient.h"
 #include "nat/natpmpprotocol.h"
-#include "logging.h"
+#include "arsenal/logging.h"
 
 namespace natpmp {
 

@@ -30,7 +30,7 @@ Created by Julian Cain on 11/3/09.
 #include <boost/bind.hpp>
 #include "nat/natpmpclientimpl.h"
 #include "nat/maidsafe_gateway.h"
-#include "logging.h"
+#include "arsenal/logging.h"
 
 namespace natpmp {
 
