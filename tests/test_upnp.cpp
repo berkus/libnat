@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(UPNP_TcpPortMappingTest)
         boost::bind(&UpnpTest::OnFailedMapping, &test, _1, _2));
     }
 
-    // boost::this_thread::sleep(boost::posix_time::seconds(2));
+    // this_thread::sleep_for(chrono::seconds(2));
 
     std::list<upnp::PortMappingExt> out_mapping;
     upnp.GetPortMappings(out_mapping);
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(UPNP_TcpPortMappingTest)
 
     if (upnp.IsAsync()) {
       printf("Waiting...\n");
-      boost::this_thread::sleep(boost::posix_time::seconds(3));
+      this_thread::sleep_for(chrono::seconds(3));
     }
 
     if (upnp.HasServices()) {
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(UPNP_UdpPortMappingTest)
 
     if (upnp.IsAsync()) {
       printf("Waiting...\n");
-      boost::this_thread::sleep(boost::posix_time::seconds(3));
+      this_thread::sleep_for(chrono::seconds(3));
     }
 
     if (upnp.HasServices()) {

@@ -29,6 +29,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "nat/maidsafe_calllatertimer.h"
 #include "arsenal/logging.h"
 
+using scoped_lock = std::unique_lock<std::mutex>;
+
 namespace base {
 
 void dummy_timeout_func() {}
@@ -41,14 +43,16 @@ CallLaterTimer::CallLaterTimer()
       strand_(io_service_),
       work_(new boost::asio::io_service::work(io_service_)),
       worker_thread_(),
-      call_later_id_(0) {
-  worker_thread_.reset(new boost::thread(&CallLaterTimer::Run, this));
+      call_later_id_(0)
+{
+  worker_thread_.reset(new std::thread(&CallLaterTimer::Run, this));
 }
 
-CallLaterTimer::~CallLaterTimer() {
+CallLaterTimer::~CallLaterTimer()
+{
   CancelAll();
   {
-    boost::mutex::scoped_lock guard(timers_mutex_);
+    scoped_lock guard(timers_mutex_);
     is_started_ = false;
   }
   // Allow io_service_.run() to exit.
@@ -69,28 +73,29 @@ void CallLaterTimer::Run() {
 
 void CallLaterTimer::ExecuteFunctor(
     const VoidFunctorEmpty &callback,
-    const boost::uint32_t &call_later_id,
-    const boost::system::error_code &error_code) {
+    const uint32_t &call_later_id,
+    const boost::system::error_code &error_code)
+{
   if (error_code) {
     if (error_code != boost::asio::error::operation_aborted) {
       logger::warning() << error_code.message() << std::endl;
-      boost::mutex::scoped_lock guard(timers_mutex_);
+      scoped_lock guard(timers_mutex_);
       timers_.erase(call_later_id);
     }
   } else {
     strand_.dispatch(callback);
-    boost::mutex::scoped_lock guard(timers_mutex_);
+    scoped_lock guard(timers_mutex_);
     timers_.erase(call_later_id);
   }
 }
 
-boost::uint32_t CallLaterTimer::AddCallLater(const boost::uint64_t &msecs,
-                                             VoidFunctorEmpty callback) {
-  boost::mutex::scoped_lock guard(timers_mutex_);
+uint32_t CallLaterTimer::AddCallLater(const uint64_t &msecs, VoidFunctorEmpty callback)
+{
+  scoped_lock guard(timers_mutex_);
   if ((msecs == 0) || (!is_started_))
-    return std::numeric_limits<boost::uint32_t>::max();
+    return std::numeric_limits<uint32_t>::max();
   call_later_id_ = (call_later_id_ + 1) % 32768;
-  boost::shared_ptr<boost::asio::deadline_timer> timer(
+  std::shared_ptr<boost::asio::deadline_timer> timer(
       new boost::asio::deadline_timer(io_service_,
           boost::posix_time::milliseconds(msecs)));
   std::pair<TimersMap::iterator, bool> p =
@@ -100,11 +105,12 @@ boost::uint32_t CallLaterTimer::AddCallLater(const boost::uint64_t &msecs,
                                   callback, call_later_id_, _1));
     return call_later_id_;
   }
-  return std::numeric_limits<boost::uint32_t>::max();
+  return std::numeric_limits<uint32_t>::max();
 }
 
-bool CallLaterTimer::CancelOne(const boost::uint32_t &call_later_id) {
-  boost::mutex::scoped_lock guard(timers_mutex_);
+bool CallLaterTimer::CancelOne(const boost::uint32_t &call_later_id)
+{
+  scoped_lock guard(timers_mutex_);
   TimersMap::iterator it = timers_.find(call_later_id);
   if (it == timers_.end())
     return false;
@@ -113,8 +119,9 @@ bool CallLaterTimer::CancelOne(const boost::uint32_t &call_later_id) {
   return true;
 }
 
-int CallLaterTimer::CancelAll() {
-  boost::mutex::scoped_lock guard(timers_mutex_);
+int CallLaterTimer::CancelAll()
+{
+  scoped_lock guard(timers_mutex_);
   int n = timers_.size();
   for (TimersMap::iterator it = timers_.begin(); it != timers_.end(); ++it) {
     it->second->cancel();
@@ -124,7 +131,7 @@ int CallLaterTimer::CancelAll() {
 }
 
 size_t CallLaterTimer::TimersMapSize() {
-  boost::mutex::scoped_lock guard(timers_mutex_);
+  scoped_lock guard(timers_mutex_);
   return timers_.size();
 }
 }  // namespace base

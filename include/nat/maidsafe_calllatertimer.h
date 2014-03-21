@@ -26,7 +26,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #pragma once
 
-#include <boost/thread.hpp>
+#include <mutex>
+#include <thread>
+
 #include <boost/cstdint.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
@@ -37,43 +39,43 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace base {
 
-typedef boost::function<void()> VoidFunctorEmpty;
+typedef std::function<void()> VoidFunctorEmpty;
 
 struct CallLaterMap {
   CallLaterMap() : time_to_execute(0), callback(), call_later_id(0) {}
-  boost::uint64_t time_to_execute;
+  uint64_t time_to_execute;
   VoidFunctorEmpty callback;
-  boost::uint32_t call_later_id;
+  uint32_t call_later_id;
 };
 
 class CallLaterTimer {
  public:
-  typedef std::map<boost::uint32_t,
-                   boost::shared_ptr<boost::asio::deadline_timer> > TimersMap;
+  typedef std::map<uint32_t,
+                   std::shared_ptr<boost::asio::deadline_timer> > TimersMap;
   CallLaterTimer();
   ~CallLaterTimer();
   inline bool IsStarted() { return is_started_; }
   int CancelAll();
-  bool CancelOne(const boost::uint32_t &call_later_id);
+  bool CancelOne(const uint32_t &call_later_id);
   size_t TimersMapSize();
   // Delay msecs milliseconds to call the function specified by callback
-  boost::uint32_t AddCallLater(const boost::uint64_t &msecs,
+  uint32_t AddCallLater(const uint64_t &msecs,
                                VoidFunctorEmpty callback);
  private:
   void Run();
   void ExecuteFunctor(const VoidFunctorEmpty &callback,
-                      const boost::uint32_t &call_later_id,
+                      const uint32_t &call_later_id,
                       const boost::system::error_code &ec);
   CallLaterTimer(const CallLaterTimer&);
   CallLaterTimer& operator=(const CallLaterTimer&);
-  boost::mutex timers_mutex_;
+  std::mutex timers_mutex_;
   bool is_started_;
   TimersMap timers_;
   boost::asio::io_service io_service_;
   boost::asio::strand strand_;
-  boost::shared_ptr<boost::asio::io_service::work> work_;
-  boost::shared_ptr<boost::thread> worker_thread_;
-  boost::uint32_t call_later_id_;
+  std::shared_ptr<boost::asio::io_service::work> work_;
+  std::shared_ptr<std::thread> worker_thread_;
+  uint32_t call_later_id_;
 };
 
 }  // namespace base
