@@ -1,12 +1,12 @@
 [submodule "travis-ci"]
 	path = travis-ci
-	url = https://berkus@github.com/berkus/travis-scripts.git
+url=git@github.com:berkus/travis-scripts.git
 [submodule "cmake"]
 	path = cmake
-	url = https://berkus@github.com/berkus/cmake-setup.git
+url=git@github.com:berkus/cmake-setup.git
 [submodule "3rdparty/endian"]
 	path = 3rdparty/endian
-	url = https://berkus@github.com/berkus/endian.git
+url=git@github.com:berkus/endian.git
 [submodule "3rdparty/arsenal"]
 	path = 3rdparty/arsenal
-	url = https://berkus@github.com/berkus/libarsenal.git
+url=git@github.com:berkus/libarsenal.git
