@@ -6,6 +6,6 @@ before_install:
   - ./travis-ci/travis_build_ninja.sh
   - ./travis-ci/travis_build_libcxx.sh
   - ./travis-ci/travis_build_boost.sh
-script: CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake -G "Ninja" -DBUILD_TESTING=YES . && ninja && ctest
+script: CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake -G "Ninja" -DTRAVIS_CI=YES -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=YES . && ninja && ctest -V
 notifications:
   email: false
