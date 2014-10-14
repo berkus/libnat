@@ -35,7 +35,7 @@ namespace upnp {
 const int kSearchTime = 2;
 const int kLeaseDuration = 900;
 const int kRefreshThreshold = 10;
-const char kClientName[] = "libssu-nat-upnp";
+const char kClientName[] = "libsss-nat-upnp";
 
 enum ProtocolType {
   kUdp = 0,

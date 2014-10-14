@@ -33,7 +33,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "nat/upnpclient.h"
 
 // #include "protocol.h"
-const int default_port = 9660; // Define port in-place instead of ssu dependency
+const int default_port = 9660; // Define port in-place instead of sss dependency
 
 using namespace std;
 
