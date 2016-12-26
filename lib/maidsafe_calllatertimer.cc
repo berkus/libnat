@@ -26,8 +26,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include <limits>
+#include <boost/log/trivial.hpp>
 #include "nat/maidsafe_calllatertimer.h"
-#include "arsenal/logging.h"
 
 using scoped_lock = std::unique_lock<std::mutex>;
 
@@ -66,7 +66,7 @@ void CallLaterTimer::Run() {
       io_service_.run();
       break;
     } catch(const std::exception &e) {
-      logger::warning() << e.what() << std::endl;
+      BOOST_LOG_TRIVIAL(warning) << e.what() << std::endl;
     }
   }
 }
@@ -78,7 +78,7 @@ void CallLaterTimer::ExecuteFunctor(
 {
   if (error_code) {
     if (error_code != boost::asio::error::operation_aborted) {
-      logger::warning() << error_code.message() << std::endl;
+      BOOST_LOG_TRIVIAL(warning) << error_code.message() << std::endl;
       scoped_lock guard(timers_mutex_);
       timers_.erase(call_later_id);
     }

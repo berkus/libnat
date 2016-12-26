@@ -29,9 +29,9 @@ Created by Julian Cain on 11/3/09.
 */
 
 #include <stdexcept>
+#include <boost/log/trivial.hpp>
 #include "nat/natpmpclient.h"
 #include "nat/natpmpprotocol.h"
-#include "arsenal/logging.h"
 
 namespace natpmp {
 
@@ -64,7 +64,7 @@ void NatPmpClient::SetMapPortSuccessCallback(
   if (impl_) {
     impl_->SetMapPortSuccessCallback(map_port_success_cb);
   } else {
-    logger::warning() << "Cannot set NAT-PMP success callback with null impl.";
+    BOOST_LOG_TRIVIAL(warning) << "Cannot set NAT-PMP success callback with null impl.";
   }
 }
 

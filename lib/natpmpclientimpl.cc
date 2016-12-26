@@ -28,9 +28,9 @@ Created by Julian Cain on 11/3/09.
 
 */
 #include <boost/bind.hpp>
+#include <boost/log/trivial.hpp>
 #include "nat/natpmpclientimpl.h"
 #include "nat/maidsafe_gateway.h"
-#include "arsenal/logging.h"
 
 namespace natpmp {
 
@@ -69,7 +69,7 @@ void NatPmpClientImpl::Start() {
     if (ec) {
       throw std::runtime_error(ec.message());
     } else {
-      logger::info() << "Started NAT-PMP client, default route to gateway is " <<
+      BOOST_LOG_TRIVIAL(info) << "Started NAT-PMP client, default route to gateway is " <<
           m_gateway_address_ << "." << std::endl;
     }
 
@@ -86,14 +86,14 @@ void NatPmpClientImpl::Start() {
 
 void NatPmpClientImpl::Stop() {
   if (socket_ && socket_->is_open()) {
-    logger::info() << "Stopping NAT-PMP client..." << std::endl;
+    BOOST_LOG_TRIVIAL(info) << "Stopping NAT-PMP client..." << std::endl;
 
     std::vector< std::pair<
         Protocol::MappingRequest, Protocol::MappingResponse> >::iterator it =
         mappings_.begin();
 
     for (; it != mappings_.end(); ++it) {
-      logger::info() << "Removing NAT-PMP mapping: " <<
+      BOOST_LOG_TRIVIAL(info) << "Removing NAT-PMP mapping: " <<
           static_cast<boost::uint32_t>((*it).first.buffer[1]) << ":" <<
           (*it).second.private_port << ":" << (*it).second.public_port <<
           std::endl;
@@ -109,9 +109,9 @@ void NatPmpClientImpl::Stop() {
     // Cleanup.
     socket_.reset();
 
-    logger::info() << "NAT-PMP client stop complete." << std::endl;
+    BOOST_LOG_TRIVIAL(info) << "NAT-PMP client stop complete." << std::endl;
   } else {
-    logger::warning() << "NAT-PMP client is already stopped." << std::endl;
+    BOOST_LOG_TRIVIAL(warning) << "NAT-PMP client is already stopped." << std::endl;
   }
 }
 
@@ -133,7 +133,7 @@ void NatPmpClientImpl::DoSendMappingRequest(boost::uint16_t protocol,
                                             boost::uint16_t public_port,
                                             boost::uint32_t lifetime) {
   if (socket_ && socket_->is_open()) {
-    logger::info() << "Queueing mapping request for protocol = " << protocol <<
+    BOOST_LOG_TRIVIAL(info) << "Queueing mapping request for protocol = " << protocol <<
         ", private_port = " << private_port << ", public_port = " <<
         public_port << ", lifetime = " << lifetime << std::endl;
 
@@ -156,7 +156,7 @@ void NatPmpClientImpl::DoSendMappingRequest(boost::uint16_t protocol,
 }
 
 void NatPmpClientImpl::SendPublicAddressRequest() {
-  logger::info() <<
+  BOOST_LOG_TRIVIAL(info) <<
       "NAT-PMP client sending public address request to gateway device." <<
       std::endl;
 
@@ -184,7 +184,7 @@ void NatPmpClientImpl::RetransmitPublicAdddressRequest(
   if (ec) {
   // operation aborted
   } else if (public_ip_request_.retry_count >= 9) {
-    logger::warning() << "No NAT-PMP gateway device found, calling stop." <<
+    BOOST_LOG_TRIVIAL(warning) << "No NAT-PMP gateway device found, calling stop." <<
         std::endl;
 
     retry_timer_.cancel();
@@ -197,7 +197,7 @@ void NatPmpClientImpl::RetransmitPublicAdddressRequest(
   // Retransmit the request.
   SendRequest(public_ip_request_);
 
-  logger::info() << "Retransmitting public address request, retry = " <<
+  BOOST_LOG_TRIVIAL(info) << "Retransmitting public address request, retry = " <<
       (boost::uint32_t)public_ip_request_.retry_count << "." << std::endl;
 
   retry_timer_.expires_from_now(boost::posix_time::milliseconds(
@@ -212,7 +212,7 @@ void NatPmpClientImpl::SendRequest(Protocol::MappingRequest & req) {
   if (socket_ && socket_->is_open()) {
     Send(reinterpret_cast<const char *>(req.buffer), req.length);
   } else {
-    logger::warning() << "Cannot send NAT-PMP request while not started!" <<
+    BOOST_LOG_TRIVIAL(warning) << "Cannot send NAT-PMP request while not started!" <<
         std::endl;
   }
 }
@@ -220,7 +220,7 @@ void NatPmpClientImpl::SendRequest(Protocol::MappingRequest & req) {
 void NatPmpClientImpl::SendQueuedRequests() {
   if (socket_ && socket_->is_open()) {
     if (!request_queue_.empty()) {
-      logger::info() << "Sending queued NAT-PMP requests, " <<
+      BOOST_LOG_TRIVIAL(info) << "Sending queued NAT-PMP requests, " <<
           request_queue_.size() << " remain."<< std::endl;
       Protocol::MappingRequest r = request_queue_.front();
 
@@ -244,7 +244,7 @@ void NatPmpClientImpl::HandleSend(const boost::system::error_code & ec,
   if (ec == boost::asio::error::operation_aborted) {
     // ...
   } else if (ec) {
-    logger::warning() << Protocol::StringFromOpcode(Protocol::kErrorSend) << " : " <<
+    BOOST_LOG_TRIVIAL(warning) << Protocol::StringFromOpcode(Protocol::kErrorSend) << " : " <<
         ec.message() << std::endl;
   } else {
     socket_->async_receive_from(
@@ -262,13 +262,13 @@ void NatPmpClientImpl::HandleConnect(const boost::system::error_code & ec) {
   if (ec == boost::asio::error::operation_aborted) {
     // ...
   } else if (ec) {
-    logger::warning() << "No NAT-PMP compatible gateway found, calling stop." <<
+    BOOST_LOG_TRIVIAL(warning) << "No NAT-PMP compatible gateway found, calling stop." <<
         std::endl;
 
   // Call stop.
   Stop();
   } else {
-    logger::info() << "Sending public address request to gateway." << std::endl;
+    BOOST_LOG_TRIVIAL(info) << "Sending public address request to gateway." << std::endl;
 
     // Send a request for the NAT-PMP gateway's public ip address. This is also
     // used to determine if the gateway is valid.
@@ -282,11 +282,11 @@ void NatPmpClientImpl::HandleReceiveFrom(const boost::system::error_code & ec,
     // ...
   } else if (ec) {
 #if NDEBUG
-    logger::warning() << Protocol::StringFromOpcode(Protocol::kErrorReceiveFrom) <<
+    BOOST_LOG_TRIVIAL(warning) << Protocol::StringFromOpcode(Protocol::kErrorReceiveFrom) <<
         " : " << ec.message() << std::endl;
 #endif
 #ifndef NDEBUG
-    logger::warning() << "No NAT-PMP compatible gateway found, calling stop." <<
+    BOOST_LOG_TRIVIAL(warning) << "No NAT-PMP compatible gateway found, calling stop." <<
         std::endl;
 #endif
     // Call stop.
@@ -354,7 +354,7 @@ void NatPmpClientImpl::HandleResponse(const char * buf, std::size_t) {
 
         retry_timer_.cancel();
 
-        logger::info() <<
+        BOOST_LOG_TRIVIAL(info) <<
         "Obtained public ip address " << response.public_address <<
         " from NAT-PMP gateway, sending any queued requests." <<
         std::endl;
@@ -378,7 +378,7 @@ void NatPmpClientImpl::HandleResponse(const char * buf, std::size_t) {
 
         if (std::find(mappings_.begin(), mappings_.end(), mapping) ==
             mappings_.end()) {
-          logger::info() << "NatPmpClientImpl::on_nat_pmp_mapping_success: " <<
+          BOOST_LOG_TRIVIAL(info) << "NatPmpClientImpl::on_nat_pmp_mapping_success: " <<
               response.public_port << ":" << std::endl;
 
           if (nat_pmp_map_port_success_cb_) {
@@ -403,7 +403,7 @@ void NatPmpClientImpl::HandleResponse(const char * buf, std::size_t) {
 
   if (opcode) {
 #ifndef NDBEUG
-    logger::warning() << "DEBUG: NAT-PMP response opcode: " <<
+    BOOST_LOG_TRIVIAL(warning) << "DEBUG: NAT-PMP response opcode: " <<
         Protocol::StringFromOpcode(opcode) << std::endl;
 #endif
   }
